@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 400px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .menu button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .menu button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Card Management System</h1>
+        <div class="menu">
+            <button onclick="createCard()">1. NEW CARD</button>
+            <button onclick="depositAmount()">2. DEPOSIT AMOUNT</button>
+            <button onclick="withdrawAmount()">3. WITHDRAW AMOUNT</button>
+            <button onclick="balanceEnquiry()">4. BALANCE ENQUIRY</button>
+            <button onclick="displayAll()">5. ALL CARD HOLDER LIST</button>
+            <button onclick="closeCard()">6. CLOSE A CARD</button>
+            <button onclick="modifyCard()">7. MODIFY A CARD</button>
+        </div>
+        <div id="output"></div>
+    </div>
+
+    <script>
+        async function apiRequest(endpoint, method, data = {}) {
+            const response = await fetch(`http://localhost:3000/${endpoint}`, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json();
+        }
+
+        async function createCard() {
+            const cno = prompt("Enter Card No:");
+            const name = prompt("Enter Card Holder Name:");
+            const deposit = parseFloat(prompt("Enter Initial Deposit:"));
+            await apiRequest('create-card', 'POST', { cno, name, deposit });
+            alert("Card Created Successfully!");
+        }
+
+        async function depositAmount() {
+            const cno = prompt("Enter Card No:");
+            const amount = parseFloat(prompt("Enter Amount to Deposit:"));
+            await apiRequest('deposit', 'POST', { cno, amount });
+            alert("Amount Deposited Successfully!");
+        }
+
+        async function withdrawAmount() {
+            const cno = prompt("Enter Card No:");
+            const amount = parseFloat(prompt("Enter Amount to Withdraw:"));
+            await apiRequest('withdraw', 'POST', { cno, amount });
+            alert("Amount Withdrawn Successfully!");
+        }
+
+        async function balanceEnquiry() {
+            const cno = prompt("Enter Card No:");
+            const result = await apiRequest('balance', 'POST', { cno });
+            document.getElementById("output").innerText = 
+                `Card No: ${result.cno}\nCard Holder Name: ${result.name}\nBalance: ${result.deposit}`;
+        }
+
+        async function displayAll() {
+            const result = await apiRequest('all-cards', 'GET');
+            let output = "Card Holder List:\n\n";
+            result.forEach(card => {
+                output += `Card No: ${card.cno}, Name: ${card.name}, Balance: ${card.deposit}\n`;
+            });
+            document.getElementById("output").innerText = output;
+        }
+
+        async function closeCard() {
+            const cno = prompt("Enter Card No:");
+            await apiRequest('close-card', 'POST', { cno });
+            alert("Card Closed Successfully!");
+        }
+
+        async function modifyCard() {
+            const cno = prompt("Enter Card No:");
+            const name = prompt("Enter New Card Holder Name:");
+            const deposit = parseFloat(prompt("Enter New Balance Amount:"));
+            await apiRequest('modify-card', 'POST', { cno, name, deposit });
+            alert("Card Modified Successfully!");
+        }
+    </script>
+</body>
+</html>
