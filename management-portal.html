@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container" id="loginContainer">
+        <h1>Management Portal Login</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit" class="nav-button">Login</button>
+        </form>
+        <div id="loginError" class="error-message"></div>
+    </div>
+
+    <script>
+        const validUsername = 'admin';  // Replace with your desired username
+        const validPassword = 'p123';  // Replace with your desired password
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === validUsername && password === validPassword) {
+                // Redirect to the Management Portal content
+                window.location.href = 'management-portal-content.html';
+            } else {
+                // Show error message
+                document.getElementById('loginError').innerText = 'Invalid username or password';
+            }
+        });
+    </script>
+</body>
+</html>

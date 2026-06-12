@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <button onclick="goBack()" class="back-button">Back to Home</button>
+        <h1>User Portal</h1>
+        <div class="menu">
+            <button onclick="createNewTab('New Card', createCard)">1. NEW CARD</button>
+            <button onclick="createNewTab('Deposit Amount', depositAmount)">2. DEPOSIT AMOUNT</button>
+            <button onclick="createNewTab('Withdraw Amount', withdrawAmount)">3. WITHDRAW AMOUNT</button>
+            <button onclick="createNewTab('Balance Enquiry', balanceEnquiry)">4. BALANCE ENQUIRY</button>
+            <button onclick="createNewTab('Close a Card', closeCard)">5. CLOSE A CARD</button>
+        </div>
+        <div id="userOutput"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
